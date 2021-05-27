@@ -1,7 +1,7 @@
 # amibroker-plugin
 
 ```
-git clone https://github.com/minhdatplus/stocker-app
+git clone https://github.com/minhdatplus/amibroker-plugin
 ```
 
 # Buiding
