@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension" xmlns:bal="http://schemas.microsoft.com/wix/BalExtension">
+  <Bundle Name="CB180080-SOICT-BKHN" Version="1.0.0.0" Manufacturer="CB180080" UpgradeCode="e95b1188-a621-4081-8a59-ed4ec2c7c351">
+  <BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLicense">
+      <bal:WixStandardBootstrapperApplication
+        SuppressOptionsUI="no" LicenseFile="eula.rtf"
+      />
+    </BootstrapperApplicationRef>
+    <Variable Name="InstallFolder" Type="string" Value="[ProgramFiles64Folder]AmiBroker"/>
+    <util:ProductSearch
+          Id="VCRedist2015x64"
+          Result="version"
+          Variable="VCRedist2015x64"
+          UpgradeCode="36F68A90-239C-34DF-B58C-64B30153CE35"
+          Condition="VersionNT64" />
+    <Chain>
+      <ExePackage
+        Id="vc_redist.x64.exe"
+        Name="vc_redist.x64.14.0.24215.1.exe"
+        DisplayName="Microsoft Visual C++ 2015 Redistributable (x64) - 14.0.24215"
+        Cache="no"
+        Compressed="yes"
+        PerMachine="yes"
+        Permanent="yes"
+		SourceFile="vc_redist.x64.exe"
+        InstallCondition="VersionNT64"
+        DetectCondition="VCRedist2015x64 >= VCRedist2015"
+        InstallCommand="/install /quiet /norestart"
+        RepairCommand="/repair /quiet /norestart"
+        UninstallCommand="/uninstall /quiet /norestart" >
+        <ExitCode Value="1638" Behavior="success"/>
+      </ExePackage>
+      <MsiPackage
+       Id="X64"
+       DisplayName="CB180080-SOICT-BKHN"
+       ForcePerMachine="yes"
+       Compressed="yes"
+       SourceFile="CB180080-SOICT-BKHN_x64.msi"
+       InstallCondition="VersionNT64"
+       DisplayInternalUI="yes">
+        <MsiProperty Name="INSTALLDIR" Value="[InstallFolder]"  />
+
+      </MsiPackage>
+
+    </Chain>
+  </Bundle>
+</Wix>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="CB180080-SOICT-BKHN" Language="1033" Version="2.0.0.0" Manufacturer="MinhDat" UpgradeCode="a9b1d837-9b09-491b-bd81-b794560745a4">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="x64"/>
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+	<Property Id="INSTALLDIR" Value="C:\ProgramFiles\AmiBroker"/>
+    <Media Id="1" Cabinet="WinApp.cab" EmbedCab="yes" />
+    <Directory Id="TARGETDIR" Name="SourceDir">
+        <Directory Id="INSTALLDIR" Name="AmiBroker" />
+    </Directory>
+    <DirectoryRef Id="INSTALLDIR">
+      <Component Id="cpprest_sdk" Guid="7B289C8E-6F5B-4A7B-A9A1-E78A89239714" Win64="yes">
+        <File Id="cpprest_sdk" Name="cpprest_2_10.dll" Source="cpprest_2_10.dll" Vital="yes"/>
+      </Component>
+      <Component Id="RegistryEdit" Guid="07497be2-dae7-4dd2-88c6-bde541b2412e" Win64="yes">
+        <RegistryValue Root="HKCU" Key="Software\TJP\Broker\Settings" Type="integer" Name="EnableHiresRTR" Value="1"></RegistryValue>
+      </Component>
+      <Directory Id="PLUGIN_INSTALL_DIR" Name="Plugins">
+        <Component Id="App" Guid="1D85B1A4-ABDD-4EB5-8E70-82C609462AEB" Win64="yes">
+          <File Id="CB180080SOICTBKHN" Name="CB180080-SOICT-BKHN.dll" Source="CB180080-SOICT-BKHN.dll" Vital="yes" />
+        </Component>
+      </Directory>
+      <Component Id="CopyFile" Guid="f1f9a270-44a2-42c7-90e3-9f21e0e047c1" Win64="yes">
+        <CopyFile Id="CB180080SOICTBKHN" FileId="CB180080SOICTBKHN" DestinationDirectory="PLUGIN_INSTALL_DIR" />
+        <RemoveFile Id="cpprest_sdk" Name="cpprest_2_10.dll" On="install" Directory="INSTALLDIR" />
+        <CopyFile Id="cpprest_sdk_cp" FileId="cpprest_sdk" DestinationDirectory="INSTALLDIR" />
+      </Component>
+    </DirectoryRef>
+
+    <Feature Id="Executable" Level="1">
+      <ComponentRef Id="cpprest_sdk" />
+      <ComponentRef Id="App" />
+      <ComponentRef Id="RegistryEdit" />
+      <ComponentRef Id="CopyFile"/>
+    </Feature>
+
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+    <UIRef Id="WixUI_CB180080" />
+
+  </Product>
+
+
+</Wix>
